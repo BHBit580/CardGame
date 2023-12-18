@@ -1,16 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CardDistribution : MonoBehaviour
 {
-    public List<GameObject> cards = new List<GameObject>(); // Assign 52 card GameObjects in the Inspector
-    public List<GameObject> playerCards;
-    public List<GameObject> enemyCards;
+    public List<GameObject> totalCards = new List<GameObject>(); // Assign 52 card GameObjects in the Inspector
+    public ListGameObjectSO playerCards;
+    public ListGameObjectSO enemyCards;
+    public ListGameObjectSO cardsOnTable;
     
     [SerializeField] private Transform playerLocation , enemyLocation;
     [SerializeField] private float distributionSpeed = 5f;
     [SerializeField] private float timeDelay = 0.5f;
+
+    private void Awake()
+    {
+        playerCards.data.Clear();
+        enemyCards.data.Clear();
+        cardsOnTable.data.Clear();
+        foreach (Transform child in transform)
+        {
+            totalCards.Add(child.gameObject);
+        }
+    }
 
     void Start()
     {
@@ -20,7 +34,7 @@ public class CardDistribution : MonoBehaviour
 
     private void RandomCardGenerator()
     {
-        List<GameObject> tempDeck = new List<GameObject>(cards);
+        List<GameObject> tempDeck = new List<GameObject>(totalCards);
         
         while (tempDeck.Count > 0)
         {
@@ -28,26 +42,26 @@ public class CardDistribution : MonoBehaviour
             GameObject selectedCard = tempDeck[randomIndex];
             tempDeck.RemoveAt(randomIndex);
 
-            if (playerCards.Count < enemyCards.Count)
+            if (playerCards.data.Count < enemyCards.data.Count)
             {
-                playerCards.Add(selectedCard);
+                playerCards.data.Add(selectedCard);
                 selectedCard.layer = LayerMask.NameToLayer("PlayerCard");
             }
             else
             {
-                enemyCards.Add(selectedCard);
+                enemyCards.data.Add(selectedCard);
             }
         }
     }
     
     IEnumerator DistributeCards()
     {
-        foreach (GameObject card in playerCards)
+        foreach (GameObject card in playerCards.data)
         {
             StartCoroutine(MoveCard(card.transform, playerLocation.position));
             yield return new WaitForSeconds(timeDelay);
         }
-        foreach (GameObject card in enemyCards)
+        foreach (GameObject card in enemyCards.data)
         {
             StartCoroutine(MoveCard(card.transform, enemyLocation.position));
             yield return new WaitForSeconds(timeDelay);
