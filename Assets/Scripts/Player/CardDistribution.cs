@@ -28,14 +28,14 @@ public class CardDistribution : MonoBehaviour
 
     void Start()
     {
-        RandomCardGenerator();
+        CardShuffler();
         StartCoroutine(DistributeCards());
     }
 
-    private void RandomCardGenerator()
+    private void CardShuffler()
     {
         List<GameObject> tempDeck = new List<GameObject>(totalCards);
-        
+         
         while (tempDeck.Count > 0)
         {
             int randomIndex = Random.Range(0, tempDeck.Count);

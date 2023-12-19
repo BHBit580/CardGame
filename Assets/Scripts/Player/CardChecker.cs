@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 public class CardChecker : MonoBehaviour
 {
@@ -22,6 +24,7 @@ public class CardChecker : MonoBehaviour
     
     public IEnumerator MoveCardToPlayerLocation()
     {
+        cardsOnTable.data = cardsOnTable.data.OrderBy(x => UnityEngine.Random.value).ToList();
         foreach (GameObject cardob in cardsOnTable.data)
         {
             cardob.layer = LayerMask.NameToLayer("PlayerCard");
@@ -35,6 +38,7 @@ public class CardChecker : MonoBehaviour
     
     public IEnumerator MoveCardToEnemyLocation()
     {
+        cardsOnTable.data = cardsOnTable.data.OrderBy(x => UnityEngine.Random.value).ToList();
         foreach (GameObject cardob in cardsOnTable.data)
         {
             StartCoroutine(MoveCard(cardob, enemyLocation.position));
@@ -81,4 +85,5 @@ public class CardChecker : MonoBehaviour
 
         return string.Empty; // No numeric part found
     }
+
 }

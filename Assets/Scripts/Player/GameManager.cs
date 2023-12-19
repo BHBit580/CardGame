@@ -99,10 +99,10 @@ public class GameManager : MonoBehaviour
         if (cardChecker.CheckCardMatching(card))
         {
             cardsOnTable.data.Add(card);
-            playerCards.data.Remove(card);
             cardMoving = false;
             yield return StartCoroutine(cardChecker.MoveCardToPlayerLocation());
-            playerTurn = true;
+            playerTurn = true; 
+            playerCards.data.Remove(card);
         }
         else
         {
