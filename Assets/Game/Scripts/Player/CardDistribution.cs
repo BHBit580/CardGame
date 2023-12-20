@@ -36,7 +36,6 @@ public class CardDistribution : MonoBehaviour
     {
         List<GameObject> tempDeck = new List<GameObject>(totalCards);
         
-         
         while (tempDeck.Count > 0)
         {
             int randomIndex = Random.Range(0, tempDeck.Count);
@@ -59,7 +58,7 @@ public class CardDistribution : MonoBehaviour
     {
         float startTime = Time.time;
         int batchSize = 2;
-        SoundManager.instance.PlaySoundOneShot(shufflingCard);
+        SoundManager.instance.PlayEffectOneShot(shufflingCard);
 
         // Combine player and enemy cards
         List<GameObject> allCards = playerCards.data.Concat(enemyCards.data).ToList();
@@ -83,7 +82,7 @@ public class CardDistribution : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.2f);
-        SoundManager.instance.StopMusic();
+        SoundManager.instance.StopEffect();
         SoundManager.instance.PlayMusicLoop(gameLoopMusic , 0.3f);
     }
     

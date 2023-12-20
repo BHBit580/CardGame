@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity , LayerMask.GetMask("PlayerCard")))       //Collider hit something
         {
-            card = playerCards.data[playerCards.data.Count - 1];
+            card = playerCards.data[playerCards.data.Count-1];
             cardMoving = true;
             StartCoroutine(MoveRotatePosition1(targetTransform1.position));
         }
@@ -111,6 +111,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            SoundManager.instance.PlayEffectOneShot(cardPutSound);
             cardsOnTable.data.Add(card);
             cardMoving = false;
             playerCards.data.Remove(card);
@@ -120,7 +121,7 @@ public class GameManager : MonoBehaviour
                 targetTransform2.position.z - 0.01f);
             playerTurn = false;                        //It's now enemy's turn player card has reached targetPosition2
         }
-        SoundManager.instance.PlaySoundOneShot(cardPutSound);
+        
     }
     
 

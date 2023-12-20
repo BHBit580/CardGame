@@ -5,7 +5,7 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
 
-    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource musicSource , effectSource;
 
     private void Awake()
     {
@@ -20,30 +20,35 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlaySoundOneShot(AudioClip clip)
+    public void PlayEffectOneShot(AudioClip clip)
     {
-        musicSource.PlayOneShot(clip);
+        effectSource.PlayOneShot(clip);
     }
 
     public void PlayMusicLoop(AudioClip clip, float volume = 1f)
     {
-        StartCoroutine(LoopAudio(clip, volume));
+        musicSource.clip = clip;
+        musicSource.Play();
+        musicSource.loop = true;
     }
-
-    IEnumerator LoopAudio(AudioClip clip, float volume)
+    
+    
+    public void PlayEffectLoop(AudioClip clip, float volume = 1f)
     {
-        while (true)
-        {
-            musicSource.clip = clip;
-            musicSource.volume = volume; // Set the volume
-            musicSource.Play();
-
-            yield return new WaitForSeconds(musicSource.clip.length);
-        }
+        effectSource.clip = clip;
+        effectSource.Play();
+        effectSource.loop = true;
     }
     
     public void StopMusic()
     {
         musicSource.Stop();
+        musicSource.loop = false;
+    }
+
+    public void StopEffect()
+    {
+        effectSource.Stop();
+        effectSource.loop = false;
     }
 }

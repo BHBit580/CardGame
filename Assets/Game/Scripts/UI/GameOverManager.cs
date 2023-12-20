@@ -6,6 +6,9 @@ public class GameOverManager : MonoBehaviour
     [SerializeField] private ListGameObjectSO playerCards;
     [SerializeField] private ListGameObjectSO enemyCards;
     [SerializeField] private GameObject[] objectsToBeOff;
+    [SerializeField] private AudioClip gameOverSound;
+
+    private bool onlyOnce = true;
     
     private void Start()
     {
@@ -17,8 +20,11 @@ public class GameOverManager : MonoBehaviour
 
     void Update()
     {
-        if (playerCards.data.Count == 0 || enemyCards.data.Count == 0)
+        if ((playerCards.data.Count == 0 || enemyCards.data.Count == 0) && onlyOnce)
         {
+            onlyOnce = false;
+            SoundManager.instance.StopMusic();
+            SoundManager.instance.StopEffect();
             foreach (GameObject obj in objectsToBeOff)
             {
                 obj.SetActive(false);
@@ -28,6 +34,7 @@ public class GameOverManager : MonoBehaviour
             {
                 child.gameObject.SetActive(true);
             }
+            SoundManager.instance.PlayEffectOneShot(gameOverSound);
         }
     }
 }

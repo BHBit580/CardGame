@@ -11,6 +11,7 @@ public class CardChecker : MonoBehaviour
     [SerializeField] private ListGameObjectSO cardsOnTable;
     [SerializeField] private ListGameObjectSO playerCards;
     [SerializeField] private ListGameObjectSO enemyCards;
+    [SerializeField] private AudioClip cardsPuttingEffectSound;
     [SerializeField] private Transform playerLocation;
     [SerializeField] private Transform enemyLocation;
     [SerializeField] private float speed = 5f;
@@ -24,30 +25,66 @@ public class CardChecker : MonoBehaviour
     
     public IEnumerator MoveCardToPlayerLocation()
     {
+        SoundManager.instance.PlayEffectLoop(cardsPuttingEffectSound);
         cardsOnTable.data = cardsOnTable.data.OrderBy(x => UnityEngine.Random.value).ToList();
-        foreach (GameObject cardob in cardsOnTable.data)
+
+        // Determine the number of cards to move in each batch
+        int batchSize = 4;
+
+        // Iterate over the cards in batches
+        for (int i = 0; i < cardsOnTable.data.Count; i += batchSize)
         {
-            cardob.layer = LayerMask.NameToLayer("PlayerCard");
-            StartCoroutine(MoveCard(cardob, playerLocation.position));
+            // Get the current batch
+            List<GameObject> currentBatch = cardsOnTable.data.Skip(i).Take(batchSize).ToList();
+
+            // Move each card in the batch simultaneously
+            foreach (GameObject card in currentBatch)
+            {
+                card.layer = LayerMask.NameToLayer("PlayerCard");
+                StartCoroutine(MoveCard(card, playerLocation.position));
+            }
+
+            // Wait for the specified time delay
             yield return new WaitForSeconds(timeDelay);
         }
-        
+
+        // Add all cards to the player's hand and clear the cardsOnTable
         playerCards.data.AddRange(cardsOnTable.data);
         cardsOnTable.data.Clear();
+        SoundManager.instance.StopEffect();
     }
+
     
     public IEnumerator MoveCardToEnemyLocation()
     {
+        SoundManager.instance.PlayEffectLoop(cardsPuttingEffectSound);
         cardsOnTable.data = cardsOnTable.data.OrderBy(x => UnityEngine.Random.value).ToList();
-        foreach (GameObject cardob in cardsOnTable.data)
+
+        // Determine the number of cards to move in each batch
+        int batchSize = 4;
+
+        // Iterate over the cards in batches
+        for (int i = 0; i < cardsOnTable.data.Count; i += batchSize)
         {
-            StartCoroutine(MoveCard(cardob, enemyLocation.position));
+            // Get the current batch
+            List<GameObject> currentBatch = cardsOnTable.data.Skip(i).Take(batchSize).ToList();
+
+            // Move each card in the batch simultaneously
+            foreach (GameObject card in currentBatch)
+            {
+                StartCoroutine(MoveCard(card, enemyLocation.position));
+            }
+
+            // Wait for the specified time delay
             yield return new WaitForSeconds(timeDelay);
         }
-        
+
+        // Add all cards to the enemy's hand and clear the cardsOnTable
         enemyCards.data.AddRange(cardsOnTable.data);
-        cardsOnTable.data.Clear();
+        cardsOnTable.data.Clear();  
+        SoundManager.instance.StopEffect();
     }
+
     
     IEnumerator MoveCard(GameObject card, Vector3 targetPosition)
     {

@@ -9,4 +9,5 @@ public class PlaySoundOnStart : MonoBehaviour
     {
         SoundManager.instance.PlayMusicLoop(clip);
     }
+    
 }

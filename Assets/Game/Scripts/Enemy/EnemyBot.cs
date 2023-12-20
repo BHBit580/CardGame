@@ -91,13 +91,13 @@ public class EnemyBot : MonoBehaviour
         }
         else
         {
+            SoundManager.instance.PlayEffectOneShot(cardPutSound);
             cardsOnTable.data.Add(card);
             enemyCards.data.RemoveAt(enemyCards.data.Count-1);
             gameManager.playerTurn = true;
         }
         
         temp = true;
-        SoundManager.instance.PlaySoundOneShot(cardPutSound);
         targetTransform2.position = new Vector3(targetTransform2.position.x , targetTransform2.position.y , targetTransform2.position.z - 0.01f);
     }
 }
