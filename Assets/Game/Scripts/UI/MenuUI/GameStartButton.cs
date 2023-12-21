@@ -16,6 +16,7 @@ public class GameStartButton : MonoBehaviour
     IEnumerator StartGame()
     {
         animator.SetTrigger("Start");
+        SoundManager.instance.StopMusic();
         yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

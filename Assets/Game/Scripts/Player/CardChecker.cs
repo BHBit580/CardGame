@@ -37,7 +37,7 @@ public class CardChecker : MonoBehaviour
             // Get the current batch
             List<GameObject> currentBatch = cardsOnTable.data.Skip(i).Take(batchSize).ToList();
 
-            // Move each card in the batch simultaneously
+            // Move each card in the batch simultaneously 
             foreach (GameObject card in currentBatch)
             {
                 card.layer = LayerMask.NameToLayer("PlayerCard");
@@ -49,7 +49,7 @@ public class CardChecker : MonoBehaviour
         }
 
         // Add all cards to the player's hand and clear the cardsOnTable
-        playerCards.data.AddRange(cardsOnTable.data);
+        playerCards.data.InsertRange(0 , cardsOnTable.data);
         cardsOnTable.data.Clear();
         SoundManager.instance.StopEffect();
     }
@@ -80,7 +80,7 @@ public class CardChecker : MonoBehaviour
         }
 
         // Add all cards to the enemy's hand and clear the cardsOnTable
-        enemyCards.data.AddRange(cardsOnTable.data);
+        enemyCards.data.InsertRange(0 , cardsOnTable.data);
         cardsOnTable.data.Clear();  
         SoundManager.instance.StopEffect();
     }

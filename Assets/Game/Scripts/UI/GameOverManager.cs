@@ -1,10 +1,14 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class GameOverManager : MonoBehaviour
 {
     [SerializeField] private ListGameObjectSO playerCards;
     [SerializeField] private ListGameObjectSO enemyCards;
+    [SerializeField] private Animator animator;
+    [SerializeField] private float transitionTime = 2f;
     [SerializeField] private GameObject[] objectsToBeOff;
     [SerializeField] private AudioClip gameOverSound;
 
@@ -36,5 +40,22 @@ public class GameOverManager : MonoBehaviour
             }
             SoundManager.instance.PlayEffectOneShot(gameOverSound);
         }
+    }
+
+    public void OnClickReStartButton()
+    {
+        StartCoroutine(LoadLevel(1));
+    }
+
+    public void OnClickHomeButton()
+    {
+        StartCoroutine(LoadLevel(0));
+    }
+    
+    IEnumerator LoadLevel(int buildIndex)
+    {
+        animator.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        SceneManager.LoadScene(buildIndex);
     }
 }
