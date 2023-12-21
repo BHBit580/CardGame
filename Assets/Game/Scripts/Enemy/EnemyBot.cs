@@ -18,14 +18,14 @@ public class EnemyBot : MonoBehaviour
     [SerializeField] private Transform targetTransform2;
 
     private GameObject card;
-    private bool temp = true;
+    private bool onlyOnce = true;
     private void Update()
     {
-        if (gameManager.playerTurn == false && temp)
+        if (gameManager.playerTurn == false && onlyOnce)
         {
             card = enemyCards.data[enemyCards.data.Count-1];
             StartCoroutine(MoveRotatePosition1(targetTransform1.position));
-            temp = false;
+            onlyOnce = false;
         }
     }
     
@@ -97,7 +97,7 @@ public class EnemyBot : MonoBehaviour
             gameManager.playerTurn = true;
         }
         
-        temp = true;
+        onlyOnce = true;
         targetTransform2.position = new Vector3(targetTransform2.position.x , targetTransform2.position.y , targetTransform2.position.z - 0.01f);
     }
 }

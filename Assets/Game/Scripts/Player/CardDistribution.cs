@@ -59,11 +59,9 @@ public class CardDistribution : MonoBehaviour
         float startTime = Time.time;
         int batchSize = 2;
         SoundManager.instance.PlayEffectOneShot(shufflingCard);
-
-        // Combine player and enemy cards
+        
         List<GameObject> allCards = playerCards.data.Concat(enemyCards.data).ToList();
-
-        // Iterate over cards in batches of four
+        
         for (int i = 0; i < allCards.Count; i += batchSize)
         {
             // Get the current batch

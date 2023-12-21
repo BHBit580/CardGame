@@ -1,0 +1,14 @@
+The main game logic is -- 
+
+First cards distribution script is called. It distributes 52 cards to equally b/w player and bot ! 
+Every distribution is random. The cards are stored in a list in a form of scriptable object.
+
+Thus there are 2 lists of cards. One for player and one for bot.
+Then player will play the card and after that bot will play the card.
+If player wins then player gets extra chance to play the card. If bot wins then bot gets extra chance to play the card. 
+
+I used coroutines for card movement 
+
+Card will first move and rotate to location 1 then location2 the code is in GameManager and Enemy script 
+
+When one of the list is empty then the game is over and the winner is declared.  

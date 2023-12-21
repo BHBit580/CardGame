@@ -30,25 +30,17 @@ public class CardChecker : MonoBehaviour
 
         // Determine the number of cards to move in each batch
         int batchSize = 4;
-
-        // Iterate over the cards in batches
         for (int i = 0; i < cardsOnTable.data.Count; i += batchSize)
         {
-            // Get the current batch
             List<GameObject> currentBatch = cardsOnTable.data.Skip(i).Take(batchSize).ToList();
-
-            // Move each card in the batch simultaneously 
             foreach (GameObject card in currentBatch)
             {
                 card.layer = LayerMask.NameToLayer("PlayerCard");
                 StartCoroutine(MoveCard(card, playerLocation.position));
             }
-
-            // Wait for the specified time delay
             yield return new WaitForSeconds(timeDelay);
         }
-
-        // Add all cards to the player's hand and clear the cardsOnTable
+        
         playerCards.data.InsertRange(0 , cardsOnTable.data);
         cardsOnTable.data.Clear();
         SoundManager.instance.StopEffect();
@@ -59,27 +51,19 @@ public class CardChecker : MonoBehaviour
     {
         SoundManager.instance.PlayEffectLoop(cardsPuttingEffectSound);
         cardsOnTable.data = cardsOnTable.data.OrderBy(x => UnityEngine.Random.value).ToList();
-
-        // Determine the number of cards to move in each batch
+        
         int batchSize = 4;
-
-        // Iterate over the cards in batches
+        
         for (int i = 0; i < cardsOnTable.data.Count; i += batchSize)
         {
-            // Get the current batch
             List<GameObject> currentBatch = cardsOnTable.data.Skip(i).Take(batchSize).ToList();
-
-            // Move each card in the batch simultaneously
             foreach (GameObject card in currentBatch)
             {
                 StartCoroutine(MoveCard(card, enemyLocation.position));
             }
-
-            // Wait for the specified time delay
             yield return new WaitForSeconds(timeDelay);
         }
-
-        // Add all cards to the enemy's hand and clear the cardsOnTable
+        
         enemyCards.data.InsertRange(0 , cardsOnTable.data);
         cardsOnTable.data.Clear();  
         SoundManager.instance.StopEffect();
