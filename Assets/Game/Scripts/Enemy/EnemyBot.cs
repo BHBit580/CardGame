@@ -65,8 +65,7 @@ public class EnemyBot : MonoBehaviour
     {
         Vector3 initialPosition = card.transform.position;
         Quaternion initialRotation = card.transform.rotation;
-    
-        // Use a single rotation axis (e.g., Quaternion.AngleAxis) to avoid gimbal lock
+        
         Quaternion randomRotation = Quaternion.AngleAxis(Random.Range(-endRotationAngleDelta, endRotationAngleDelta), Vector3.up);
         Quaternion targetRotation = initialRotation * randomRotation;
 

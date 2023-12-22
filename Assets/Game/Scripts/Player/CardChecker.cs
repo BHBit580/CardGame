@@ -27,8 +27,7 @@ public class CardChecker : MonoBehaviour
     {
         SoundManager.instance.PlayEffectLoop(cardsPuttingEffectSound);
         cardsOnTable.data = cardsOnTable.data.OrderBy(x => UnityEngine.Random.value).ToList();
-
-        // Determine the number of cards to move in each batch
+        
         int batchSize = 4;
         for (int i = 0; i < cardsOnTable.data.Count; i += batchSize)
         {
