@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     
     public bool playerTurn = true;
     private bool cardMoving;
+    private Vector3 cardInitialRotation = new Vector3(-90, -90, -90);
     private GameObject card;
     
     
@@ -51,15 +52,11 @@ public class GameManager : MonoBehaviour
     
     IEnumerator MoveRotatePosition1(Vector3 targetTransform1Position)
     {
-        Quaternion initialRotation = card.transform.rotation;
-        Quaternion targetRotation = Quaternion.Euler(
-            card.transform.eulerAngles.x,
-            card.transform.eulerAngles.y,
-            card.transform.eulerAngles.z + rotationAngle
-        );
+        Quaternion initialRotation = Quaternion.Euler(cardInitialRotation);
+        Quaternion targetRotation = initialRotation * Quaternion.Euler(0f, 0, rotationAngle);
 
         Vector3 initialPosition = card.transform.position;
-        
+    
         float elapsedTime = 0f;
         while (elapsedTime < 1f)
         {
@@ -73,7 +70,6 @@ public class GameManager : MonoBehaviour
         card.transform.rotation = targetRotation;
         card.transform.position = targetTransform1Position;
 
-        
         if (Vector3.Distance(card.transform.position, targetTransform1Position) < 0.1f)
         {
             yield return new WaitForSeconds(movementTimeDelay);
@@ -81,12 +77,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     IEnumerator MoveRotatePosition2(Vector3 targetPosition2)
     {
         Vector3 initialPosition = card.transform.position;
         Quaternion initialRotation = card.transform.rotation;
-    
-        // Use a single rotation axis (e.g., Quaternion.AngleAxis) to avoid gimbal lock
+        
         Quaternion randomRotation = Quaternion.AngleAxis(Random.Range(-endRotationAngleDelta, endRotationAngleDelta), Vector3.up);
         Quaternion targetRotation = initialRotation * randomRotation;
 
